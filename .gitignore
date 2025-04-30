@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# SQLite database
+*.db
+*.sqlite3
+
+# Virtual environment
+venv/
+.env/
+.env.*
+
+# IDE/editor folders
+.vscode/
+.idea/
+*.swp
+
+# macOS
+.DS_Store
+
+# Testing and coverage
+htmlcov/
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+.pytest_cache/
+
+# Pydantic compiled cache
+__pydantic__/ 
