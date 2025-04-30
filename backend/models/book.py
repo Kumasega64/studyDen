@@ -7,5 +7,5 @@ class Book(SQLModel, table=True):
     user_id: int = Field(foreign_key="user.id")
     title: str
     description: str
-    category: str  # user-assigned tag
+    category: Optional[str] = Field(default=None)
     created_at: datetime = Field(default_factory=datetime.utcnow)
