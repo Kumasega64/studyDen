@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
@@ -20,8 +21,10 @@ public class BookshelfHandler : MonoBehaviour
         // Root Node.
         if(currentBookNode == null) // FIX WHEN THERE IS NO ROOT NODE.
         {
+            currentBookNode.bookID = 1;
+
             // Makes all Books children of the GUI canvas and sets initial position.
-            currentBookNode.bookObject.transform.parent = initializer.Canvas.transform;
+            currentBookNode.bookObject.transform.parent = initializer.BSBG.transform;
             currentBookNode.bookObject.transform.localPosition = new Vector2(0, 245);
         }
 
@@ -46,6 +49,9 @@ public class BookshelfHandler : MonoBehaviour
             // Links the books.
             currentBookNode.nextBook = newBookNode;
             currentBookNode.nextBook.previousBook = currentBookNode;
+
+            // Sets ID for new book node. 
+            currentBookNode.nextBook.bookID = currentBookNode.bookID + 1;
         }
 
         // Progresses further into the list until empty node found.
@@ -53,6 +59,8 @@ public class BookshelfHandler : MonoBehaviour
         {
             LinkBooks(currentBookNode.nextBook, newBookNode);
         }
+
+        currentBookNode.BulkPopupDisable();
     }
 
     // Locates a book baseed on its name.
@@ -74,6 +82,28 @@ public class BookshelfHandler : MonoBehaviour
         else
         {
             return Locatebook(currentBookNode.nextBook, targetname);
+        }
+    }
+
+        // Locates a book baseed on its ID.
+    private Book Locatebook(Book currentBookNode, int targetID)
+    {
+        // No more books are present.
+        if(currentBookNode == null)
+        {
+            return null;
+        }
+
+        // Book Found.
+        else if (currentBookNode.bookID == targetID)
+        {
+            return currentBookNode;
+        }
+
+        // Book not found, will continue to traverse.
+        else
+        {
+            return Locatebook(currentBookNode.nextBook, targetID);
         }
     }
 
@@ -102,9 +132,6 @@ public class BookshelfHandler : MonoBehaviour
 
         // Destroys the target book nodes GameObject to avoid memory leak.
         Object.Destroy(bookToDestroy.bookObject);
-
-        // Reduces book count;
-        rootBook.bookCount--;
     }
 }
 
@@ -112,24 +139,29 @@ public class BookshelfHandler : MonoBehaviour
 public class Book
 {
     private string bookName = null;
-    public int bookCount = 0;
+    public int bookID = 0;
     private Color bookColor;
     public GameObject bookObject = null;
     public Book previousBook = null;
     public Book nextBook = null;
+    public GameObject popup = null;
 
     public Book(string bookName)
     {
         this.bookName = bookName;
-        bookCount++;
+        
         bookColor = PickColor();
 
         bookObject = new GameObject(bookName);
-        bookObject.transform.parent = GameObject.Find("Initializer").GetComponent<Initializer>().Canvas.transform;
+        bookObject.transform.parent = GameObject.Find("Initializer").GetComponent<Initializer>().BSBG.transform;
         bookObject.transform.localScale = new Vector2(1, 1);
         bookObject.transform.localPosition = new Vector2(0, 245);
 
+
         bookObject.AddComponent<Image>();
+        bookObject.AddComponent<Button>();
+
+        bookObject.GetComponent<Button>().onClick.AddListener(delegate{ TogglePopup();});
 
         bookObject.GetComponent<RectTransform>().sizeDelta = new Vector2(320, 110);
         bookObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("art/test_assets/Bookpng");
@@ -155,7 +187,7 @@ public class Book
         bookText.transform.localScale = new Vector2(1, 1);
         bookText.GetComponent<RectTransform>().sizeDelta = new Vector2(235.86f, 103.71f);
 
-                // Creates a temporary variable for the text component to avoid repetetive fetches.
+        // Creates a temporary variable for the text component to avoid repetetive fetches.
         TextMeshProUGUI tmp = bookText.GetComponent<TextMeshProUGUI>();            
 
             // Sets all necessary values for text.
@@ -166,6 +198,102 @@ public class Book
             tmp.verticalAlignment = VerticalAlignmentOptions.Middle;
             tmp.fontWeight = FontWeight.Bold;
             tmp.outlineWidth = 0.2f;
+
+                // Shadow for the Bookshelf UI.
+        popup = new GameObject("Popup Window");
+
+            // Sets bsBtn as child of canvas and adds components for GUI button necessities.
+            popup.transform.parent = bookObject.transform;
+            popup.AddComponent<CanvasRenderer>();
+            popup.AddComponent<Image>();
+            popup.gameObject.tag = "popup";
+
+            // Sets bsBtn sprite and transform.
+            popup.GetComponent<Image>().sprite = Resources.Load<Sprite>("art/test_assets/Popup spritesheet");
+            popup.GetComponent<RectTransform>().localPosition = new Vector2(0, -96.25f);
+            popup.GetComponent<RectTransform>().sizeDelta = new Vector2(300, 75);
+            popup.GetComponent<RectTransform>().localScale = new Vector2(1, 1);
+            popup.SetActive(false);
+
+            // Adventure Button_____________________________________________________________________________________________
+            GameObject gameBtn = new GameObject("Game Button");
+
+                // Sets advBtn as child of canvas and adds components for GUI button necessities.
+                gameBtn.transform.parent = popup.transform;
+                gameBtn.AddComponent<CanvasRenderer>();
+                gameBtn.AddComponent<Image>();
+                gameBtn.AddComponent<Button>();
+
+                // THIS DISABLES THE BUTTON COMPONENT TO AVOID MAKING IT FUNCTION. WILL ENABLE WHEN BUILDING LARGER SCALE.
+                gameBtn.GetComponent<Button>().enabled = false;
+                
+                // Targets the MoveToAdventure function when button advBtn is pressed.
+                // gameBtn.GetComponent<Button>().onClick.AddListener(delegate{ });
+
+                // Sets advBtn sprite and transform.
+                gameBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>("art/test_assets/popupBtn");
+
+                // Sets appropriate size and position.
+                gameBtn.GetComponent<RectTransform>().localPosition = new Vector2(0, 0);
+                gameBtn.GetComponent<RectTransform>().sizeDelta = new Vector2(275, 65);
+                gameBtn.GetComponent<RectTransform>().localScale = new Vector2(1, 1);
+
+                    // Adventure Button Text_____________________________________________
+                    GameObject gmBtntxt = new GameObject("Text");
+            
+                        // Sets bsText as child of advBtn and adds components for GUI text necessities.
+                        gmBtntxt.transform.parent = gameBtn.transform;
+                        gmBtntxt.AddComponent<CanvasRenderer>();
+                        gmBtntxt.AddComponent<TextMeshProUGUI>(); 
+
+                        // Sets appropriate size and position.
+                        gmBtntxt.GetComponent<RectTransform>().sizeDelta = new Vector2(266.955f, 57.5f);
+                        gmBtntxt.GetComponent<RectTransform>().localPosition = new Vector2(0, 0);
+                        gmBtntxt.GetComponent<RectTransform>().localScale = new Vector2(1, 1);
+                        
+                        // Creates a temporary variable for the text component to avoid repetetive fetches.
+                        TextMeshProUGUI tmpgui = gmBtntxt.GetComponent<TextMeshProUGUI>();            
+
+                            // Sets all necessary values for text.
+                            tmpgui.text = "Play Game";
+                            tmpgui.color = Color.white;
+                            tmpgui.fontWeight = FontWeight.Bold;
+                            tmpgui.fontSize = 30;
+                            tmpgui.alignment = TextAlignmentOptions.Center;
+                            tmpgui.verticalAlignment = VerticalAlignmentOptions.Middle;        
+    }
+
+    private void TogglePopup()
+    {
+        BulkPopupDisable(popup.transform.parent.name);
+
+        // If the popup is already open, we close it.
+        if(popup.activeSelf)
+        {
+            popup.SetActive(false);
+        }
+
+        // Otherwise, we open it.
+        else
+        {
+            popup.SetActive(true);
+        }
+    }
+
+    // Collects all popup objects and disables them with the exception of the a particular popup if sent in.
+    public void BulkPopupDisable(string currentPopupName = null)
+    {
+        GameObject[] allPopups = GameObject.FindGameObjectsWithTag("popup");
+
+        foreach(GameObject pop in allPopups)
+        {
+            // We avoid disabling this object's popup to avoid conflics with logic below.
+            if(currentPopupName == null || !pop.transform.parent.name.Equals(currentPopupName))
+            {
+                pop.SetActive(false);
+            }
+
+        }
     }
 
     // Returns a random color to assign.
