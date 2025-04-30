@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Depends
 from sqlmodel import Session, select
 from db.session import engine, create_db_and_tables
-from models import User, Book
 from routers import questions, books, users, tomadachi
 
 app = FastAPI()
@@ -23,15 +22,3 @@ app.include_router(tomadachi.router, prefix="/api", tags=["Tomadachi"])
 @app.get("/")
 def root():
     return {"message": "Tomadachi API running!"}
-
-# @app.post("/books/", response_model=Book)
-# def create_book(book: Book, session: Session = Depends(get_session)):
-#     session.add(book)
-#     session.commit()
-#     session.refresh(book)
-#     return book
-
-# @app.get("/books/", response_model=list[Book])
-# def get_books(session: Session = Depends(get_session)):
-#     books = session.exec(select(Book)).all()
-#     return books

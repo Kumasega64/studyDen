@@ -8,4 +8,4 @@ class Book(SQLModel, table=True):
     title: str
     description: str
     category: str  # user-assigned tag
-    created_at: datetime
+    created_at: datetime = Field(default_factory=datetime.utcnow)

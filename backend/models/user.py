@@ -7,4 +7,4 @@ class User(SQLModel, table=True):
     username: str
     email: str
     password_hash: str
-    created_at: datetime
+    created_at: datetime = Field(default_factory=datetime.utcnow)
