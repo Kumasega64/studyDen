@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ec9954495b407d5439fda69eefa5c24b
+guid: 257591e4313cfbc46852543448842710
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3513221369028855321
-    second: DisabledBtn_0
+      213: -931076278129447091
+    second: DarkenBG_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DisabledBtn_0
+      name: DarkenBG_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 348
-        height: 73
+        width: 412
+        height: 915
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7e939b957c78e3fc0800000000000000
-      internalID: -3513221369028855321
+      spriteID: d4f2d4fde072413f0800000000000000
+      internalID: -931076278129447091
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      DisabledBtn_0: -3513221369028855321
+      DarkenBG_0: -931076278129447091
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
