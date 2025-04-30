@@ -1,2 +1,5 @@
 fastapi[standard]
 sqlmodel
+pytesseract
+opencv-python
+numpy
