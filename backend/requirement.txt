@@ -1,3 +1,6 @@
 fastapi[standard]
 sqlmodel
 passlib[bcrypt]
+pytesseract
+opencv-python
+numpy
