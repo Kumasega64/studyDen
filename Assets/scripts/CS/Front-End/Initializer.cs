@@ -1,30 +1,49 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Initializer : MonoBehaviour
 {
-    private TextMeshPro nameText;
-    private TextMeshPro levelText;
-    private TextMeshPro xpText;
-    private GameObject xpBar;
+    private Camera cam = null;
+    private GameObject mainBG = null;
+    private GameObject canvas = null;
+    private TextMeshPro nameText = null;
+    private TextMeshPro levelText = null;
+    private TextMeshPro xpText = null;
+    private GameObject xpBar = null;
+    private GameObject bsBtn = null;
+    private GameObject advBtn = null;
+    private GameObject backToMainBtn = null;
+    private GameObject bsbg = null;
+    private GameObject addBookBtn = null;
 
     void Start()
     {
+        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+
+        // Creates Front-End Environment for the Main Screen
+        InitializeMainScreen();
+    }
+
+    private void InitializeMainScreen()
+    {
         // Main Menu Background_____________________________________________________________________________________________
-        GameObject BG = new GameObject("BG");
+        mainBG = new GameObject("Main BG");
 
             // Sets BG position, assigned it a sprite, and changed the sorting order (Z-Axis) to be the lowest.
-            BG.transform.position = new Vector2(0, 0);
-            BG.AddComponent<SpriteRenderer>();
-            BG.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("art/test_assets/BG");
-            BG.GetComponent<SpriteRenderer>().sortingOrder = -1;
+            mainBG.transform.position = new Vector2(0, 0);
+            mainBG.AddComponent<SpriteRenderer>();
+            mainBG.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("art/test_assets/BG");
+            mainBG.GetComponent<SpriteRenderer>().sortingOrder = -1;
 
         // Icon Background_______________________________________________________________
         GameObject IconBG = new GameObject("Icon BG");
 
-            // Sets IconBG position and assigns it a sprite.
-            IconBG.transform.position = new Vector2(0, 3.5f);
+            // Sets IconBG as child of BG and sets local position while assigning it a sprite.
+            IconBG.transform.parent = mainBG.transform;
+            IconBG.transform.localPosition = new Vector2(0, 3.5f);
             IconBG.AddComponent<SpriteRenderer>();
             IconBG.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("art/test_assets/CharacterBG");
         
@@ -45,26 +64,27 @@ public class Initializer : MonoBehaviour
                     sprt.frontSortingOrder = 3;
                     sprt.backSortingOrder = 2;
 
-            // Monster name Object_______________________________________________________
-            GameObject monsterName = new GameObject("Monster Name");
+                // Monster name Object_______________________________________________________
+                GameObject monsterName = new GameObject("Monster Name");
 
-                // Sets monsterName position and assigns it text.
-                monsterName.transform.localPosition = new Vector2(0, 2);
-                monsterName.AddComponent<TextMeshPro>();
+                    // Sets monsterName as child of IconBG, sets local position while assigning it text.
+                    monsterName.transform.parent = IconBG.transform;
+                    monsterName.transform.localPosition = new Vector2(0, -1.5f);
+                    monsterName.AddComponent<TextMeshPro>();
 
-                // Assigns textbox size.
-                monsterName.GetComponent<RectTransform>().sizeDelta = new Vector2(4, 0.7f);
+                    // Assigns textbox size.
+                    monsterName.GetComponent<RectTransform>().sizeDelta = new Vector2(4, 0.7f);
 
-                // Assigned to gloval variable to pass in other scripts.
-                nameText = monsterName.GetComponent<TextMeshPro>();            
+                    // Assigned to gloval variable to pass in other scripts.
+                    nameText = monsterName.GetComponent<TextMeshPro>();            
 
-                    // Sets all necessary values for text.
-                    nameText.text = "Greg";
-                    nameText.color = Color.white;
-                    nameText.fontSize = 5;
-                    nameText.alignment = TextAlignmentOptions.Center;
-                    nameText.verticalAlignment = VerticalAlignmentOptions.Middle;
-                    nameText.fontWeight = TMPro.FontWeight.Bold;
+                        // Sets all necessary values for text.
+                        nameText.text = "Greg";
+                        nameText.color = Color.white;
+                        nameText.fontSize = 5;
+                        nameText.alignment = TextAlignmentOptions.Center;
+                        nameText.verticalAlignment = VerticalAlignmentOptions.Middle;
+                        nameText.fontWeight = TMPro.FontWeight.Bold;
 
             // Monster Sprite____________________________________________________________
             GameObject monsterSprite = new GameObject("Monster");
@@ -83,8 +103,9 @@ public class Initializer : MonoBehaviour
             // Monster Level Object______________________________________________________
             GameObject monsterLevel = new GameObject("Monster Level");
 
-                // Set monsterLevel transform and assigned it a sprite renderer.
-                monsterLevel.transform.position = new Vector2(0, 0.5f);
+                // Sets monsterLevel as child of BG, sets transform while assigning it a sprite renderer.
+                monsterLevel.transform.parent = mainBG.transform;
+                monsterLevel.transform.localPosition = new Vector2(0, 0.5f);
                 monsterLevel.transform.localScale = new Vector2(0.6f, 1);
                 monsterLevel.AddComponent<SpriteRenderer>();
 
@@ -137,11 +158,13 @@ public class Initializer : MonoBehaviour
        
             // Monster Experience Points Meter Object_______________________________________________________________________
             GameObject xpMeter = new GameObject("XP Meter");
+
+                // Sets xpMeter as child of Bg and sets its local positon while assigning it a sprite.
+                xpMeter.transform.parent = mainBG.transform;
+                xpMeter.transform.localPosition = new Vector2(0, -0.866f);
                 xpMeter.AddComponent<SpriteRenderer>();
 
                 xpMeter.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("art/test_assets/Meter");
-                xpMeter.transform.position = new Vector2(0, -0.866f);
-
                 xpMeter.GetComponent<Transform>().localScale = new Vector2(1, 1);
 
                 // Experience Points Text_____________________________________________________
@@ -224,7 +247,7 @@ public class Initializer : MonoBehaviour
                     xpBar.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
 
         // GUI Canvas_______________________________________________________________________________________________________
-        GameObject canvas = new GameObject("Canvas");
+        canvas = new GameObject("Canvas");
 
             // Adds components for GUI canvas necessities.
             canvas.AddComponent<RectTransform>();
@@ -234,17 +257,19 @@ public class Initializer : MonoBehaviour
 
             // Sets canvas to screen size and assigns the appropriate camera.
             canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
-            canvas.GetComponent<Canvas>().worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+            canvas.GetComponent<Canvas>().worldCamera = cam;
 
             // Bookshelf Button_____________________________________________________________________________________________
-            GameObject bsBtn = new GameObject("Bookshelf Button");
+            bsBtn = new GameObject("Bookshelf Button");
 
                 // Sets bsBtn as child of canvas and adds components for GUI button necessities.
                 bsBtn.transform.parent = canvas.transform;
-                bsBtn.AddComponent<RectTransform>();
                 bsBtn.AddComponent<CanvasRenderer>();
                 bsBtn.AddComponent<Image>();
                 bsBtn.AddComponent<Button>();
+
+                // Targets the MoveToBookshelf function when button bsBtn is pressed.
+                bsBtn.GetComponent<Button>().onClick.AddListener(delegate{ MoveToMain("M->B");});
 
                 // Sets bsBtn sprite and transform.
                 bsBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>("art/test_assets/Button");
@@ -257,7 +282,6 @@ public class Initializer : MonoBehaviour
     
                 // Sets bsText as child of bsBtn and adds components for GUI text necessities.
                 bsText.transform.parent = bsBtn.transform;
-                bsText.AddComponent<RectTransform>();
                 bsText.AddComponent<CanvasRenderer>();
                 bsText.AddComponent<TextMeshProUGUI>(); 
 
@@ -277,17 +301,19 @@ public class Initializer : MonoBehaviour
                     tmpgui.verticalAlignment = VerticalAlignmentOptions.Middle;
 
             // Adventure Button_____________________________________________________________________________________________
-            GameObject advBtn = new GameObject("Adventure Button");
+            advBtn = new GameObject("Adventure Button");
 
                 // Sets advBtn as child of canvas and adds components for GUI button necessities.
                 advBtn.transform.parent = canvas.transform;
-                advBtn.AddComponent<RectTransform>();
                 advBtn.AddComponent<CanvasRenderer>();
                 advBtn.AddComponent<Image>();
                 advBtn.AddComponent<Button>();
 
                 // THIS DISABLES THE BUTTON COMPONENT TO AVOID MAKING IT FUNCTION. WILL ENABLE WHEN BUILDING LARGER SCALE.
                 advBtn.GetComponent<Button>().enabled = false;
+                
+                // Targets the MoveToAdventure function when button advBtn is pressed.
+                bsBtn.GetComponent<Button>().onClick.AddListener(delegate{ MoveToMain("M->A");});
 
                 // Sets advBtn sprite and transform.
                 advBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>("art/test_assets/DisabledBtn");
@@ -302,7 +328,6 @@ public class Initializer : MonoBehaviour
             
                         // Sets bsText as child of advBtn and adds components for GUI text necessities.
                         advText.transform.parent = advBtn.transform;
-                        advText.AddComponent<RectTransform>();
                         advText.AddComponent<CanvasRenderer>();
                         advText.AddComponent<TextMeshProUGUI>(); 
 
@@ -322,9 +347,135 @@ public class Initializer : MonoBehaviour
                             tmpgui.verticalAlignment = VerticalAlignmentOptions.Middle;
     }
 
+    private void InitializeBookshelfScreen()
+    {
+        // Bookshelf Menu Background_____________________________________________________________________________________________
+        bsbg = new GameObject("Bookshelf BG");
+
+            // Sets BG position, assigned it a sprite, and changed the sorting order (Z-Axis) to be the lowest.
+            bsbg.transform.position = new Vector2(16, 0);
+            bsbg.AddComponent<SpriteRenderer>();
+
+            // Adds Bookshelf script for bookshelf menu GUI.
+            bsbg.AddComponent<BookshelfHandler>();
+
+            bsbg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("art/test_assets/Bookshelf BG");
+            bsbg.GetComponent<SpriteRenderer>().sortingOrder = -1;       
+
+        // Back to Main Menu Button_________________________________________________________________________________________
+        addBookBtn = new GameObject("Add Book Button");
+
+            // Sets bsBtn as child of canvas and adds components for GUI button necessities.
+            addBookBtn.transform.parent = canvas.transform;
+            addBookBtn.AddComponent<CanvasRenderer>();
+            addBookBtn.AddComponent<Image>();
+            addBookBtn.AddComponent<Button>();
+
+            BookshelfHandler bkshlf = bsbg.GetComponent<BookshelfHandler>();
+
+            // Targets the MoveToBookshelf function when button bsBtn is pressed.
+            addBookBtn.GetComponent<Button>().onClick.AddListener(delegate{ bkshlf.LinkBooks(bkshlf.rootBook, new Book("Another Test")); });
+
+            // Sets bsBtn sprite and transform.
+            addBookBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>("art/test_assets/AddButtton");
+            addBookBtn.GetComponent<RectTransform>().localPosition = new Vector2(132, 382);
+            addBookBtn.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 100);
+            addBookBtn.GetComponent<RectTransform>().localScale = new Vector2(1, 1);
+
+        // Back to Main Menu Button_________________________________________________________________________________________
+        backToMainBtn = new GameObject("Back to Main Button");
+
+            // Sets bsBtn as child of canvas and adds components for GUI button necessities.
+            backToMainBtn.transform.parent = canvas.transform;
+            backToMainBtn.AddComponent<CanvasRenderer>();
+            backToMainBtn.AddComponent<Image>();
+            backToMainBtn.AddComponent<Button>();
+
+            // Targets the MoveToBookshelf function when button bsBtn is pressed.
+            backToMainBtn.GetComponent<Button>().onClick.AddListener(delegate{ MoveToMain("B->M");});
+
+            // Sets bsBtn sprite and transform.
+            backToMainBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>("art/test_assets/BackButtton");
+            backToMainBtn.GetComponent<RectTransform>().localPosition = new Vector2(-132, 382);
+            backToMainBtn.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 100);
+            backToMainBtn.GetComponent<RectTransform>().localScale = new Vector2(1, 1);
+    }
+    
+    // Switches to Bookshelf screen.
+    private void MoveToMain(string from)
+    {
+        switch(from)
+        {
+            // Main Menu -> Bookshelf Menu
+            case "M->B":
+
+                // If the Bookshelf Menu is not already initialized, then it will do so.
+                if(bsbg == null)
+                {
+                    // Creates Front-End Environment for the Bookshelf Screen.
+                    InitializeBookshelfScreen();
+                }       
+
+                // Disables Main Menu Buttons.
+                bsBtn.SetActive(false);
+                advBtn.SetActive(false);
+                addBookBtn.SetActive(true);
+                backToMainBtn.SetActive(true);
+
+                // Enables Bookshelf Menu Buttons.
+
+                // Moves camera to new menu location.
+                cam.transform.position = new Vector3(bsbg.transform.position.x, bsbg.transform.position.y, -10);
+                break;
+
+            // Main Menu -> Adventure Menu
+            case "M->A":    
+
+                // Disables Main Menu Buttons.
+                bsBtn.SetActive(false);
+                advBtn.SetActive(false);
+
+                break;
+
+            // Bookshelf Menu -> Main Menu
+            case "B->M":
+
+                // Disables Main Menu Buttons.
+                bsBtn.SetActive(true);
+                advBtn.SetActive(true);
+                addBookBtn.SetActive(false);
+                backToMainBtn.SetActive(false);
+
+                // Moves camera to new menu location.
+                cam.transform.position = new Vector3(mainBG.transform.position.x, mainBG.transform.position.y, -10);
+                break;
+
+            // Adventure Menu -> Main Menu
+            case "A->M":
+
+                // Disables Main Menu Buttons.
+                bsBtn.SetActive(true);
+                advBtn.SetActive(true);
+
+                // Moves camera to new menu location.
+                cam.transform.position = new Vector3(mainBG.transform.position.x, mainBG.transform.position.y, -10);
+                break;
+        }
+
+    }
+
     // Getters.
+    
+    public Camera Cam { get { return cam; } }
+    public GameObject MainBG { get { return mainBG; } }
+    public GameObject Canvas { get { return canvas; } }
     public TextMeshPro NameText { get { return nameText; } }
     public TextMeshPro LevelText { get { return LevelText; } }
     public TextMeshPro XpText { get { return XpText; } }
-    public GameObject XpBar { get { return XpBar; } }
+    public TextMeshPro XpBar { get { return XpBar; } }
+    public GameObject BsBtn { get { return BsBtn; } }
+    public GameObject AdvBtn { get { return AdvBtn; } }
+    public GameObject BackToMainBtn { get { return backToMainBtn; } }
+    public GameObject BSBG { get { return bsbg; } }
+    public GameObject AddBookBtn { get { return addBookBtn; } }
 }
