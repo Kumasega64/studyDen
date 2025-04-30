@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from sqlmodel import Session, select
 from db.session import engine, create_db_and_tables
 from models import User, Book
-from routers import questions, books, users
+from routers import questions, books, users, tomadachi
 
 app = FastAPI()
 
@@ -18,6 +18,7 @@ def get_session():
 app.include_router(questions.router, prefix="/api", tags=["Questions"])
 app.include_router(books.router, prefix="/api", tags=["Books"])
 app.include_router(users.router, prefix="/api", tags=["Users"])
+app.include_router(tomadachi.router, prefix="/api", tags=["Tomadachi"])
 
 @app.get("/")
 def root():

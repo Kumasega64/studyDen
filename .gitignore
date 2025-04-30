@@ -31,3 +31,6 @@ coverage.xml
 
 # Pydantic compiled cache
 __pydantic__/ 
+
+Library/
+Temp/
