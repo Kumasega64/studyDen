@@ -31,3 +31,6 @@ coverage.xml
 
 # Pydantic compiled cache
 __pydantic__/ 
+
+# Ignore .env file in the backend/utils directory
+backend/utils/.env
