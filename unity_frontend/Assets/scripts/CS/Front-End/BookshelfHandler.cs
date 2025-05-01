@@ -2,6 +2,7 @@ using System.Collections;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BookshelfHandler : MonoBehaviour
@@ -133,6 +134,11 @@ public class BookshelfHandler : MonoBehaviour
         // Destroys the target book nodes GameObject to avoid memory leak.
         Object.Destroy(bookToDestroy.bookObject);
     }
+
+    public static void LoadScene()
+    {
+        SceneManager.LoadSceneAsync("MutipleChoice");
+    }
 }
 
 // Book Tree.
@@ -192,7 +198,7 @@ public class Book
 
             // Sets all necessary values for text.
             tmp.text = bookName;
-            tmp.color = Color.white;
+            tmp.color = Color.black;
             tmp.fontSize = 30;
             tmp.alignment = TextAlignmentOptions.Center;
             tmp.verticalAlignment = VerticalAlignmentOptions.Middle;
@@ -223,12 +229,9 @@ public class Book
                 gameBtn.AddComponent<CanvasRenderer>();
                 gameBtn.AddComponent<Image>();
                 gameBtn.AddComponent<Button>();
-
-                // THIS DISABLES THE BUTTON COMPONENT TO AVOID MAKING IT FUNCTION. WILL ENABLE WHEN BUILDING LARGER SCALE.
-                gameBtn.GetComponent<Button>().enabled = false;
                 
                 // Targets the MoveToAdventure function when button advBtn is pressed.
-                // gameBtn.GetComponent<Button>().onClick.AddListener(delegate{ });
+                gameBtn.GetComponent<Button>().onClick.AddListener(delegate{ BookshelfHandler.LoadScene(); });
 
                 // Sets advBtn sprite and transform.
                 gameBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>("art/test_assets/popupBtn");
@@ -265,6 +268,8 @@ public class Book
 
     private void TogglePopup()
     {
+        Debug.Log("???");
+
         BulkPopupDisable(popup.transform.parent.name);
 
         // If the popup is already open, we close it.

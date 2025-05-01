@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class QuizGame : MonoBehaviour
 {
@@ -70,6 +71,8 @@ public class QuizGame : MonoBehaviour
             feedbackText.text = $"Final Score: {score}/{questions.Count}";
             scoreText.text = "";
             DisableAllButtons();
+
+            Invoke("LoadMainScene", 1.5f);
             return;
         }
 
@@ -101,22 +104,29 @@ public class QuizGame : MonoBehaviour
         scoreText.text = $"Score: {score}";
     }
 
+    private void LoadMainScene()
+    {
+        SceneManager.LoadSceneAsync("MainMenu");
+    }
+
     void OnAnswerSelected(string selectedAnswer)
     {
         Question q = questions[currentQuestionIndex];
 
         if (selectedAnswer == q.correctAnswer)
         {
-            feedbackText.text = "Correct!";
+            feedbackText.color = Color.green;
+            feedbackText.text = "Correct!!!";
             score++;
         }
         else
         {
-            feedbackText.text = $"Wrong! Correct answer: {q.correctAnswer}";
+            feedbackText.color = Color.red;
+            feedbackText.text = $"Wrong...";
         }
 
         currentQuestionIndex++;
-        Invoke("ShowQuestion", 1.5f);
+        Invoke("ShowQuestion", .5f);
     }
 
     void DisableAllButtons()
