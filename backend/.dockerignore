@@ -1,0 +1,49 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Environment variables
+.env
+.env.*
+
+# Docker files
+Dockerfile
+docker-compose.yml
+
+# Logs
+*.log
+
+# Virtual environments
+venv/
+.env/
+
+# Test coverage reports
+htmlcov/
+.coverage
+*.cover
+*.py,cover
+
+# MyPy cache
+.mypy_cache/
+
+# Pyre type checker
+.pyre/
+
+# Pytest cache
+.pytest_cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Static files
+staticfiles/
+mediafiles/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
