@@ -287,12 +287,14 @@ public class Book
 
         foreach(GameObject pop in allPopups)
         {
+            Debug.Log(currentPopupName);
+
             // We avoid disabling this object's popup to avoid conflics with logic below.
             if(currentPopupName == null || !pop.transform.parent.name.Equals(currentPopupName))
             {
+                Debug.Log("Done");
                 pop.SetActive(false);
             }
-
         }
     }
 

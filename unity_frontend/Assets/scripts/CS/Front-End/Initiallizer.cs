@@ -28,6 +28,7 @@ public class Initializer : MonoBehaviour
 
         // Creates Front-End Environment for the Main Screen
         InitializeMainScreen();
+        InitializeBookshelfScreen();
     }
 
     private void InitializeMainScreen()
@@ -415,6 +416,11 @@ public class Initializer : MonoBehaviour
             backToMainBtn.GetComponent<RectTransform>().localPosition = new Vector2(-132, 382);
             backToMainBtn.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 100);
             backToMainBtn.GetComponent<RectTransform>().localScale = new Vector2(1, 1);
+
+
+            backToMainBtn.SetActive(false);
+            addBookBtn.SetActive(false);
+            bsbg.SetActive(false);
     }
     
     // Switches to Bookshelf screen.
@@ -424,14 +430,6 @@ public class Initializer : MonoBehaviour
         {
             // Main Menu -> Bookshelf Menu
             case "M->B":
-
-                // If the Bookshelf Menu is not already initialized, then it will do so.
-                if(bsbg == null)
-                {
-                    // Creates Front-End Environment for the Bookshelf Screen.
-                    InitializeBookshelfScreen();
-                }       
-
                 // Disables Main Menu Buttons.
                 bsBtn.SetActive(false);
                 advBtn.SetActive(false);
@@ -465,15 +463,16 @@ public class Initializer : MonoBehaviour
                 // Disables Main Menu Buttons.
                 bsBtn.SetActive(true);
                 advBtn.SetActive(true);
-                bsbg.SetActive(false);
-                addBookBtn.SetActive(false);
-                backToMainBtn.SetActive(false);
                 
                 if(bookHandler.rootBook != null)
                 {
                     bookHandler.rootBook.BulkPopupDisable();
-                    bookHandler.rootBook.bookObject.SetActive(false);
+                    bookHandler.rootBook.bookObject.SetActive(false);        
                 }
+
+                bsbg.SetActive(false);
+                addBookBtn.SetActive(false);
+                backToMainBtn.SetActive(false);
 
                 // Moves camera to new menu location.
                 cam.transform.position = new Vector3(mainBG.transform.position.x, mainBG.transform.position.y, -10);
