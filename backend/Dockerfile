@@ -28,5 +28,5 @@ COPY . .
 # Expose the port FastAPI will run on
 EXPOSE 8000
 
-# Start FastAPI using uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Start FastAPI using uvicorn (PORT 8080 for cloudshell deployment)
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
