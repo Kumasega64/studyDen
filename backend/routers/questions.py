@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
+from services.question_service import create_question_service
 from models import Question
 from db.session import get_session
 from typing import List
@@ -13,18 +14,7 @@ router = APIRouter(prefix="/questions", tags=["Questions"])
 
 @router.post("/", response_model=QuestionRead)
 def create_question(data: QuestionCreate, session: Session = Depends(get_session)):
-    question = Question(
-        book_id=data.book_id,
-        question_text=data.question_text,
-        correct_answer=data.correct_answer,
-        created_at=datetime.utcnow()
-    )
-    question.wrong_answers = data.wrong_answers
-
-    session.add(question)
-    session.commit()
-    session.refresh(question)
-    return question
+    return create_question_service(data, session)
 
 
 @router.get("/", response_model=List[QuestionRead])
