@@ -4,3 +4,6 @@ passlib[bcrypt]
 pytesseract
 opencv-python
 numpy
+dotenv
+openai
+pydantic-settings

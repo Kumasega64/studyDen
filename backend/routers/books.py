@@ -1,5 +1,8 @@
+#books.py routers
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
+from services.book_service import get_book_service
 from models import Book
 from db.session import get_session  # Assumes you have a `get_session` dependency
 from typing import List
@@ -33,10 +36,7 @@ def get_books(session: Session = Depends(get_session)):
 
 @router.get("/{book_id}", response_model=BookRead)
 def get_book(book_id: int, session: Session = Depends(get_session)):
-    book = session.get(Book, book_id)
-    if not book:
-        raise HTTPException(status_code=404, detail="Book not found")
-    return book
+    return get_book_service(book_id, session)
 
 
 @router.delete("/{book_id}", response_model=BookRead)
