@@ -34,12 +34,17 @@ Study Buddy is a mobile application that turns studying into an interactive and 
 
 ## **TECH STACK:**
 
-  ### Frontend: Unity Game Engine (C#)
+  ### Frontend: 
+  Unity Game Engine (C#)
 
-  ### Backend: SQLite for local storage
+  ### Backend: 
+  SQLite for local storage
 
-  ### OCR: Python pytesseract for text extraction from images
+  ### OCR: 
+  Python pytesseract for text extraction from images
 
-  ### AI Integration: ChatGPT via OpenAI API for question generation
+  ### AI Integration: 
+  ChatGPT via OpenAI API for question generation
 
-  ### Platform: Mobile (Android/iOS)
+  ### Platform: 
+  Mobile (Android/iOS)
