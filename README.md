@@ -1,10 +1,10 @@
-#**Study Buddy:**
+# **Study Buddy:**
 
 Study Buddy is a mobile application that turns studying into an interactive and rewarding experience. Users create their own personalized "Study Buddy" avatar and level it up by engaging with educational content and mini-games.
 
 
 
-##**FEATURES:**
+## **FEATURES:**
 
   Create and Customize Avatars:
   
@@ -32,7 +32,7 @@ Study Buddy is a mobile application that turns studying into an interactive and 
 
 
 
-##**TECH STACK:**
+## **TECH STACK:**
 
   Frontend: Unity Game Engine (C#)
 
