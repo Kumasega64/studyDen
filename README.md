@@ -2,7 +2,7 @@
 
 
 
-  FEATURES:
+  **FEATURES:**
 
   Create and Customize Avatars:
   
@@ -30,7 +30,7 @@
 
 
 
-  TECH STACK:
+  **TECH STACK:**
 
   Frontend: Unity Game Engine (C#)
 
