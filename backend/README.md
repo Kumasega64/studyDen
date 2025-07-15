@@ -66,11 +66,11 @@ OPENAI_API_KEY=your_openai_api_key_here
 ### 5. Run the Application
 
 ```bash
-# Development mode
-uvicorn main:app --reload
+# Development mode (0.0.0.0 needed to be able to talk to other devices within local dev network like phone)
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
-# Or using FastAPI CLI
-fastapi dev
+# Or using FastAPI CLI.
+fastapi dev --host 0.0.0.0
 ```
 
 ### 6. Access the API
