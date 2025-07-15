@@ -7,7 +7,7 @@ from models import Book
 from db.session import get_session  # Assumes you have a `get_session` dependency
 from typing import List
 from datetime import datetime
-from schemas.book import BookCreate, BookRead
+from schemas.book import BookCreate, BookRead, BookUpdate
 
 router = APIRouter(prefix="/books", tags=["Books"])
 
@@ -37,6 +37,36 @@ def get_books(session: Session = Depends(get_session)):
 @router.get("/{book_id}", response_model=BookRead)
 def get_book(book_id: int, session: Session = Depends(get_session)):
     return get_book_service(book_id, session)
+
+
+@router.put("/{book_id}", response_model=BookRead)
+def update_book(book_id: int, book_update: BookUpdate, session: Session = Depends(get_session)):
+    book = session.get(Book, book_id)
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    
+    update_data = book_update.dict(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(book, field, value)
+    
+    session.add(book)
+    session.commit()
+    session.refresh(book)
+    return book
+
+
+@router.patch("/{book_id}/study", response_model=BookRead)
+def mark_book_as_studied(book_id: int, session: Session = Depends(get_session)):
+    """Mark a book as studied by updating the last_studied timestamp"""
+    book = session.get(Book, book_id)
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    
+    book.last_studied = datetime.utcnow()
+    session.add(book)
+    session.commit()
+    session.refresh(book)
+    return book
 
 
 @router.delete("/{book_id}", response_model=BookRead)
