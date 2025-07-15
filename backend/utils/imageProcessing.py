@@ -34,6 +34,9 @@ def changeContrast(brightness, contrast, image):
 
 def prepareImg(img):
 
+    #convert Byte to array for CV2
+    img = cv2.imdecode(np.frombuffer(img, np.uint8), cv2.IMREAD_COLOR)
+
     #Make gray
     if len(img.shape) != 2:
         img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
@@ -87,11 +90,6 @@ def findContours(image):
 
             cv2.rectangle(image,(x,y), (x+w, y+h), (36,255,12),2)
 
-            
-            # Save ROI as an image file
-            roi_filename = os.path.join(r"C:\Users\kuma\Documents\New folder", f"roi_{i}.png")
-            cv2.imwrite(roi_filename, roi)
-            i += 1
 
             rois.append(roi)
 
@@ -122,4 +120,20 @@ def getFullText(img):
     roiText = ' ' + pytesseract.image_to_string(img)
     imgText+= roiText
 
+    print(imgText)
+
     return imgText
+
+
+print("hi")
+with open(r'C:\Users\kuma\Documents\Projects\Test\images\1000037965 (1).jpg', 'rb') as f:
+    img = f.read()
+
+print("hi")
+getFullText(img)
+print("not cleaned                                                                                                          ")
+img_cv = cv2.imdecode(np.frombuffer(img, np.uint8), cv2.IMREAD_COLOR)
+
+# Optional: convert to grayscale or preprocess
+text = pytesseract.image_to_string(img_cv)
+print("OCR result:", text)
