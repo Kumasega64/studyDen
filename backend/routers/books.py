@@ -61,8 +61,8 @@ def mark_book_as_studied(book_id: int, session: Session = Depends(get_session)):
     book = session.get(Book, book_id)
     if not book:
         raise HTTPException(status_code=404, detail="Book not found")
-    
-    book.last_studied = datetime.utcnow()
+    # TODO: Make sure this is the correct way to update the last_studied timestamp
+    book.last_studied = datetime.now()
     session.add(book)
     session.commit()
     session.refresh(book)
