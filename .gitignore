@@ -34,3 +34,5 @@ __pydantic__/
 
 # Ignore .env file in the backend/utils directory
 backend/.env
+env
+.env
