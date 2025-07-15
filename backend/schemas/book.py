@@ -14,6 +14,7 @@ class BookRead(BaseModel):
     title: str
     description: str
     category: Optional[str]
+    last_studied: Optional[datetime]
     created_at: datetime
 
     class Config:
@@ -23,6 +24,7 @@ class BookUpdate(BaseModel):
     title: Optional[str]
     description: Optional[str]
     category: Optional[str]  # user-assigned tag
+    last_studied: Optional[datetime]
 
     class Config:
         orm_mode = True

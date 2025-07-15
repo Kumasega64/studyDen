@@ -8,4 +8,5 @@ class Book(SQLModel, table=True):
     title: str
     description: str
     category: Optional[str] = Field(default=None)
+    last_studied: Optional[datetime] = Field(default=None)
     created_at: datetime = Field(default_factory=datetime.utcnow)
