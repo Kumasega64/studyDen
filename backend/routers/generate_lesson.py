@@ -82,7 +82,6 @@ async def generate_lesson(
             ]
         )
         
-        print("GPT Output", response)
         gpt_output = response.choices[0].message.content
         print("GPT Output",gpt_output)
 
