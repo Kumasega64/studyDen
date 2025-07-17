@@ -30,7 +30,7 @@ def extract_text_from_images(image_bytes_list: List[bytes]) -> List[str]:
     extracted_texts = []
     for image_bytes in image_bytes_list:
         image = Image.open(io.BytesIO(image_bytes))
-        pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+        # pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
         text = pytesseract.image_to_string(image)
         #text = getFullText(image)
         extracted_texts.append(text)
