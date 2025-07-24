@@ -1,6 +1,6 @@
 import json
-from sqlmodel import Field, SQLModel
-from typing import Optional
+from sqlmodel import Field, SQLModel, Relationship
+from typing import Optional, List
 from datetime import datetime
 
 
@@ -11,6 +11,8 @@ class Question(SQLModel, table=True):
     correct_answer: str
     wrong_answers_json: str = Field(default="[]")  # Stored as a JSON string
     created_at: datetime = Field(default_factory=datetime.utcnow)
+
+    book: Optional["Book"] = Relationship(back_populates="questions")
 
     @property
     def wrong_answers(self) -> list[str]:
